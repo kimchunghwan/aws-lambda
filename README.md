@@ -1,4 +1,6 @@
 ## todo 
+- [ ] previsioned concurrency
+- [ ] terraform deploy
 - [ ] hosting 
 - [ ] api versionning use stage? 
 - [ ] use mq 
