@@ -10,7 +10,7 @@ export const handler = async (
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'Hello from Lambda! updated 11111',
+      message: 'Hello from Lambda! updated 11111 2222',
       input: event,
     }),
   };

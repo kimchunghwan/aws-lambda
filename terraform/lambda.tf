@@ -1,5 +1,5 @@
-resource "aws_lambda_function" "example_lambda" {
-    function_name = "example-lambda"
+resource "aws_lambda_function" "api_v1" {
+    function_name = "api_v1"
     handler       = "dist/handler.handler"
     runtime       = "nodejs20.x"
     publish       = true
@@ -12,9 +12,10 @@ resource "aws_lambda_function" "example_lambda" {
 
 resource "aws_lambda_alias" "example_lambda_alias" {
     name             = "live"
-    function_name    = aws_lambda_function.example_lambda.function_name
-    function_version = aws_lambda_function.example_lambda.version
+    function_name    = aws_lambda_function.api_v1.function_name
+    function_version = aws_lambda_function.api_v1.version
 }
+
 
 # resource "aws_lambda_provisioned_concurrency_config" "example_lambda_concurrency" {
 #     function_name                     = aws_lambda_function.example_lambda.function_name
