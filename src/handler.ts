@@ -1,17 +1,26 @@
-import { APIGatewayEvent, Context, Callback, APIGatewayProxyResult } from 'aws-lambda';
+import { APIGatewayEvent, Context as ContextLambda, Callback, APIGatewayProxyResult, APIGatewayProxyEventV2 } from 'aws-lambda';
+import { inferAsyncReturnType, initTRPC } from '@trpc/server';
+import { awsLambdaRequestHandler, CreateAWSLambdaContextOptions } from '@trpc/server/adapters/aws-lambda';
 
-export const handler = async (
-  event: APIGatewayEvent,
-  context: Context,
-  callback: Callback
-): Promise<APIGatewayProxyResult> => {
-  console.log('Received event:', JSON.stringify(event, null, 2));
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Hello from Lambda! updated 11111 2222',
-      input: event,
-    }),
-  };
-};
+const createContext = ({
+  event,
+  context,
+}: CreateAWSLambdaContextOptions<APIGatewayProxyEventV2>) => ({})
+type Context = inferAsyncReturnType<typeof createContext>;
+
+const t = initTRPC.context<Context>().create();
+
+const appRouter = t.router({
+  hello: t.procedure.query(() => {
+    return 'Hello from tRPC!';
+  }),
+  bye: t.procedure.query(() => {
+    return "Hello from tRPC! path={'bye'}"; 
+  })
+});
+
+export const handler = awsLambdaRequestHandler({
+  router: appRouter,
+  createContext,
+});

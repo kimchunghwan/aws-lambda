@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "node build.js",
     "deploy": "npm run build && zip -r function.zip dist/* && aws lambda update-function-code --function-name myLambdaFunction --zip-file fileb://function.zip",
     "deploy:example-lambda": "npm run build && zip -r function.zip dist/* && aws lambda update-function-code --function-name example-lambda --zip-file fileb://function.zip"
   },
@@ -12,9 +12,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@trpc/server": "^10.45.2",
     "@types/node": "^22.9.0",
     "aws-sdk": "^2.1692.0",
-    "typescript": "^5.6.3"
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.145",
