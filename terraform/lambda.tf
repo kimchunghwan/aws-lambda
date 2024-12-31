@@ -1,19 +1,31 @@
 resource "aws_lambda_function" "api_v1" {
-    function_name = "api_v1"
-    handler       = "dist/handler.handler"
-    runtime       = "nodejs20.x"
-    publish       = true
+  function_name = "api_v1"
+  handler       = "dist/handler.handler"
+  runtime       = "nodejs20.x"
+  publish       = true
 
-    role          = aws_iam_role.lambda_role.arn
-    filename      = "../function.zip" # zip 파일 경로
+  role     = aws_iam_role.lambda_role.arn
+  filename = "../function.zip" # zip 파일 경로
 
-    source_code_hash = filebase64sha256("../function.zip")
+  source_code_hash = filebase64sha256("../function.zip")
+}
+
+resource "aws_lambda_function" "function_01" {
+  function_name = "function_01"
+  handler       = "dist/function_01.handler"
+  runtime       = "nodejs20.x"
+  publish       = true
+
+  role     = aws_iam_role.lambda_role.arn
+  filename = "../function.zip" # zip 파일 경로
+
+  source_code_hash = filebase64sha256("../function.zip")
 }
 
 resource "aws_lambda_alias" "example_lambda_alias" {
-    name             = "live"
-    function_name    = aws_lambda_function.api_v1.function_name
-    function_version = aws_lambda_function.api_v1.version
+  name             = "live"
+  function_name    = aws_lambda_function.api_v1.function_name
+  function_version = aws_lambda_function.api_v1.version
 }
 
 
